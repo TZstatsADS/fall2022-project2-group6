@@ -66,13 +66,15 @@ ui <- fluidPage(
         dashboardHeader(),
         dashboardSidebar(
             sidebarMenu(
-                menuItem("Topic - Air Quality", tabName = "AirQuality"),
-                menuItem("1.Air Quality Levels in Neighborhood ", tabName = "AirQuality"),
-                menuItem("2.Comparison - Two Neighborhoods", tabName = "AirQuality2"),
-                menuItem("Topic - Beach Water Quality", tabName = "beachQuality"),
-                menuItem("1.Water Quality Levels in Beach", tabName = "beachQuality2"),
+                menuItem("Introduction", tabName = "Introduction"),
+                menuItem("Restaurant Inspections", tabName = "restaurant"),
+                menuItem("Beach Water Quality", tabName = "beachQuality2"),
                 menuItem("COVID", tabName = "covid"),
-                menuItem("Restaurant Inspections", tabName = "restaurant")
+                menuItem("Air Quality Levels in Neighborhood ", tabName = "AirQuality"),
+                menuItem("Air Quality Levels in 2 Neighborhoods", tabName = "AirQuality2")
+               
+                
+                
                
         )
         ),
@@ -80,124 +82,190 @@ ui <- fluidPage(
             tabItems(
                 # First tab content
               
-              tabItem(tabName = "restaurant",
-                      fluidRow(
-                          radioButtons("years", label = "Choose a Year:",
-                                       choices = unique(restaurant_inspections_filtered_3$years), selected = "NONE"),
-                          plotOutput("violations"),
-                          plotOutput("action")
-                        ),
-                          mainPanel(leafletOutput("map"))
-                   
-                      
-              ),
-              tabItem(tabName = "covid",
-                      fluidRow(
-                        dateRangeInput("dates", label = h3("Choose a Date Range:")),
-                        
-                        hr(),
-                        fluidRow(column(4, verbatimTextOutput("value")))
-                       
-                      ),
-                      mainPanel(
-                        fluidRow(
-                               box(width = 100, plotOutput("cases")),
-                        
-                  
-                               box(width = 100, plotOutput("hospitalizations")),
+              tabItem(tabName = "Introduction", fluidPage(
+                fluidRow(box(width = 15, title = "Introduction", status = "primary",
+                             solidHeader = TRUE, h3("Covid-19 and NYC business"),
+                             h4("By Wendy Doan, Qizhen Yang, Qiao Li, Yandong Xiong, James Bergin Smiley"),
+                             h5("Drawing data from multiple sources, this application provides insight into the economic impact of coronavirus 2019 (COVID-19) on New York’s city economy. The results shed light on both the financial fragility of many businesses, and the significant impact COVID-19 had on these businesses in the weeks after the COVID-19–related disruptions began."),
+                             h5("The application will mainly track down the change in the number of businesses being closed or newly opened across Covid timeline. We divided the businesses into 4 types:", strong("Retail, Service, Food and Beverage, Entertainment")))),
+                fluidRow(box(width = 15, title = "Targeted User", status = "primary", solidHeader=TRUE,
+                             h5("We believe that the application would be useful for anyone who are interested in learning more about the effects of Covid 19"))),
+                fluidRow(box(width = 15, title = "How to Use The App", status = "primary",
+                             solidHeader = TRUE,
+                             h5("The application is divided into 5 separate tabs"),
+                             tags$div(tags$ul(
+                               tags$li("The", strong("first"), "tab: Introduction"),
+                               tags$li("The", strong("second"), "tab: The detailed ZIP code map shows the extent of Covid 19 outbreak in NYC. It provided key information including: confirmed cases, infection rate, number of business that are closed in the neighborhood"),
+                               tags$li("The", strong("third and fourth"), "tab: stats on recently opened/ closed business during Covid 19, tracked separately for different industries"),
+                               tags$li("The", strong("fifth"),"tab: Appendix and data sources")
                                
-                        
-                               box(width = 100, plotOutput("deaths")),
-                               
-                        )
-                        )
+                             ))
+                ))
+              )), 
+              # end of home 
               
-                        
-                       
-                      ),
+              
+              tabItem(tabName = "restaurant", fluidPage(
+                fluidRow(
+                  column(width = 9,
+                         box(width = NULL, solidHeader = TRUE,
+                             leafletOutput("map", height = 500)
+                         ),
+                         box(width = NULL, plotOutput("criticalmonths", height = 200)),
+                         box(width = NULL, plotOutput("borough", height = 200)),
+                #         box(width = NULL, plotOutput("noncriticalviolations", height = 200)),
+                         box(width = NULL, plotOutput("criticalviolations", height = 200))
+                         
+                  ),
+                  column(width = 3,
+                         box(width = NULL,  
+                             selectInput(
+                               inputId = "years_1",
+                               label = "Choose a Year:",
+                               choices = c("2016", "2017",
+                                           "2018", "2019",
+                                           "2020", "2021",
+                                           "2022"),
+                               selected = "2016"
+                             )
+                             
+                         ),
+                         box(width = NULL, plotOutput("violations", height = 200)),
+                         box(width = NULL, plotOutput("action", height = 200))
+                  )
+                  
+                )
+              )
+              ),
+              #end of restaurant inspections
+              
+              tabItem(tabName = "beachQuality2", fluidPage(
+                
+                fluidRow(
+                  column(width = 3,
+                         box(width = NULL,  
+                             selectInput(
+                               inputId = "beach",
+                               label = "Choose a Beach type:",
+                               choices = beach_choices,
+                               selected = "AMERICAN TURNERS"
+                             )
+                             
+                         )
+                         
+                  )
+                ),
+                fluidRow(
+                  column(width = 12,
+                         box(width = NULL, plotOutput("center", height = 300)),
+                         box(width = NULL, plotOutput("right", height = 300)),
+                         box(width = NULL, plotOutput("left", height = 300))
+                  )
+                )
+              )
+              
+              ),
+              tabItem(tabName = "covid", fluidPage (
+                fluidRow(
+                  column(width = 3,
+                         box(width = NULL,  
+                             fluidRow(
+                               dateRangeInput("dates", label = h3("Choose a Date Range:"), start = "2022-09-25"),
+                               
+                             #  hr(),
+                              # fluidRow(verbatimTextOutput("value"))
+                               
+                             )
+                             
+                         )
+                  )
+                ),
+                fluidRow(
+                  column(width = 12,
+                         box(width = NULL, plotOutput("cases", height = 300)),
+                         box(width = NULL, plotOutput("hospitalizations", height = 300)),
+                         box(width = NULL, plotOutput("deaths", height = 300))
+                  )
+                )
+              )
+              ),
+              
             
-              tabItem(tabName = "beachQuality2",
+            
+              tabItem(tabName = "AirQuality",
                       fluidRow(
                         selectInput(
-                          inputId = "beach",
-                          label = "Choose a Beach type:",
-                          choices = beach_choices,
-                          selected = "AMERICAN TURNERS"
+                          inputId = "neighborhood_type",
+                          label = "Choose a Neighborhood type:",
+                          choices = Neighborhood_choices,
+                          selected = "Borough"
+                        ),
+                        selectInput(
+                          inputId = "neighborhood",
+                          label = "Choose the Neighborhood:",
+                          choices = NULL,
+                          multiple = TRUE
                         )
                       ),
                       mainPanel(
-                        plotOutput("center"),
-                        plotOutput("right"),
-                        plotOutput("left")
-                       
+                        splitLayout(cellWidths = c("50%", "50%", "50%"),plotOutput("Particles"), plotOutput("Nitrogen"), 
+                                    plotOutput("Ozone"))
                       )
               ),
-                tabItem(tabName = "AirQuality",
-                        fluidRow(
-                        selectInput(
-                            inputId = "neighborhood_type",
-                            label = "Choose a Neighborhood type:",
-                            choices = Neighborhood_choices,
-                            selected = "CD"
-                        ),
-                        selectInput(
-                            inputId = "neighborhood",
-                            label = "Choose the Neighborhood:",
-                            choices = NULL,
-                            multiple = TRUE
+              
+              tabItem(tabName = "AirQuality2",
+                      fluidRow(
+                        div(style="display: inline-block;vertical-align:top; width: 150px;", selectInput(
+                          inputId = "years",
+                          label = "Choose a  Year:",
+                          choices = unique(Air_Quality_subset_ordered$years),
+                          selected = "2008"
                         )
-                        ),
-                        mainPanel(
-                            splitLayout(cellWidths = c("50%", "50%", "50%"),plotOutput("Particles"), plotOutput("Nitrogen"), 
-                                        plotOutput("Ozone"))
                         )
-                ),
-                
-                tabItem(tabName = "AirQuality2",
-                        fluidRow(
-                          selectInput(
-                            inputId = "years",
-                            label = "Choose a  Year:",
-                            choices = unique(Air_Quality_subset_ordered$years),
-                            selected = "2008"
-                          )
-                        ),
-                        fluidRow (
-                          selectInput(
-                            inputId = "neighborhood_type_2",
-                            label = "Choose a Neighborhood type:",
-                            choices = Neighborhood_choices,
-                            selected = "CD"
-                          ),
-                          
-                          selectInput(
-                            inputId = "neighborhood_2",
-                            label = "Choose the First Neighborhood:",
-                            choices = NULL,
-                            multiple = TRUE
-                          )
+                      ),
+                      fluidRow (
+                        div(style="display: inline-block;vertical-align:top; width: 150px;",
+                        selectInput(
+                          inputId = "neighborhood_type_2",
+                          label = "Choose a Neighborhood type:",
+                          choices = Neighborhood_choices,
+                          selected = "Borough"
+                        )
                         ),
                         
-                        fluidRow(
-                          selectInput(
-                            inputId = "neighborhood_type2_1",
-                            label = "Choose a Neighborhood type:",
-                            choices = Neighborhood_choices,
-                            selected = "CD"
-                          ),
-                          
-                          selectInput(
-                            inputId = "neighborhood2_1",
-                            label = "Choose the Second Neighborhood:",
-                            choices = NULL,
-                            multiple = TRUE
-                          )
-                          
+                        div(style="display: inline-block;vertical-align:top; width: 150px;",
+                            selectInput(
+                          inputId = "neighborhood_2",
+                          label = "Choose the First Neighborhood:",
+                          choices = NULL,
+                          multiple = TRUE
+                        )
+                        )
+                      ),
+                      
+                      fluidRow(
+                        div(style="display: inline-block;vertical-align:top; width: 150px;", selectInput(
+                          inputId = "neighborhood_type2_1",
+                          label = "Choose a Neighborhood type:",
+                          choices = Neighborhood_choices,
+                          selected = "Borough"
+                        )
                         ),
                         
-                        mainPanel(
-                          plotOutput("plot1")
+                      div(style="display: inline-block;vertical-align:top; width: 150px;",
+                          selectInput(
+                          inputId = "neighborhood2_1",
+                          label = "Choose the Second Neighborhood:",
+                          choices = NULL,
+                          multiple = TRUE
                         )
+                      )
+                        
+                      ),
+                      
+                      mainPanel(
+                        plotOutput("plot1")
+                      )
                     )
                 
               )
@@ -207,20 +275,31 @@ ui <- fluidPage(
 
 
 
+
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-    observeEvent(input$neighborhood_type,
-                 {
-                     # Use this function to update the choices for the user.
-                     # First argument is session, next the input to update,
-                     # and third the new choices. Here, I'm filtering the
-                     # previously made data.frame to based on the series column,
-                     # and returning the choices column. 
-                     # `drop=TRUE` makes it explicit that I want a vector returned.
-                     updateSelectInput(session, input = "neighborhood",
-                                       choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type,
-                                                                           "Geo.Place.Name", drop = TRUE])
-                 })
+  observeEvent(input$neighborhood_type,
+               {
+                 x <- input$neighborhood_type
+                 
+                 if(x=='Borough'){
+                   updateSelectInput(session,'neighborhood',
+                                     choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type,
+                                                                         "Geo.Place.Name", drop = TRUE],
+                                     selected = 'Manhattan')
+                 }else if(x=='UHF34' || x=='UHF42'){
+                   updateSelectInput(session,'neighborhood',
+                                     choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type,
+                                                                         "Geo.Place.Name", drop = TRUE],
+                                     selected = 'East Flatbush - Flatbush')
+                 }else{
+                   updateSelectInput(session,'neighborhood',
+                                     choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type,
+                                                                         "Geo.Place.Name", drop = TRUE],
+                                     selected = 'Long Island City - Astoria')
+                 }
+                 
+               })
     
     
     
@@ -289,28 +368,48 @@ server <- function(input, output, session) {
     
     observeEvent(input$neighborhood_type_2,
                  {
-                   # Use this function to update the choices for the user.
-                   # First argument is session, next the input to update,
-                   # and third the new choices. Here, I'm filtering the
-                   # previously made data.frame to based on the series column,
-                   # and returning the choices column. 
-                   # `drop=TRUE` makes it explicit that I want a vector returned.
-                   updateSelectInput(session, input = "neighborhood_2",
-                                     choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type_2,
-                                                                         "Geo.Place.Name", drop = TRUE])
+                   x <- input$neighborhood_type_2
+                   
+                   if(x=='Borough'){
+                     updateSelectInput(session,'neighborhood_2',
+                                       choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type_2,
+                                                                           "Geo.Place.Name", drop = TRUE],
+                                       selected = 'Manhattan')
+                   }else if(x=='UHF34' | x=='UHF42'){
+                     updateSelectInput(session,'neighborhood_2',
+                                       choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type_2,
+                                                                           "Geo.Place.Name", drop = TRUE],
+                                       selected = 'East Flatbush - Flatbush')
+                   }else{
+                     updateSelectInput(session,'neighborhood_2',
+                                       choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type_2,
+                                                                           "Geo.Place.Name", drop = TRUE],
+                                       selected = 'East Flatbush - Flatbush')
+                   }
+                   
                  })
     
     observeEvent(input$neighborhood_type2_1,
                  {
-                   # Use this function to update the choices for the user.
-                   # First argument is session, next the input to update,
-                   # and third the new choices. Here, I'm filtering the
-                   # previously made data.frame to based on the series column,
-                   # and returning the choices column. 
-                   # `drop=TRUE` makes it explicit that I want a vector returned.
-                   updateSelectInput(session, input = "neighborhood2_1",
-                                     choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type2_1,
-                                                                         "Geo.Place.Name", drop = TRUE])
+                   x <- input$neighborhood_type2_1
+                   
+                   if(x=='Borough'){
+                     updateSelectInput(session,'neighborhood2_1',
+                                       choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type2_1,
+                                                                           "Geo.Place.Name", drop = TRUE],
+                                       selected = 'Manhattan')
+                   }else if(x=='UHF34' | x=='UHF42'){
+                     updateSelectInput(session,'neighborhood2_1',
+                                       choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type2_1,
+                                                                           "Geo.Place.Name", drop = TRUE],
+                                       selected = 'East Flatbush - Flatbush')
+                   }else{
+                     updateSelectInput(session,'neighborhood2_1',
+                                       choices = Neighborhood_Type_choices[Neighborhood_Type_choices$Geo.Type.Name %in% input$neighborhood_type2_1,
+                                                                           "Geo.Place.Name", drop = TRUE],
+                                       selected = 'Long Island City - Astoria')
+                   }
+                  
                  })
     
     
@@ -577,8 +676,9 @@ server <- function(input, output, session) {
       
     })
     
-    years <- reactive({
-      restaurant_inspections_filtered_year <- restaurant_inspections_filtered_3[restaurant_inspections_filtered_3$years == input$years,]
+    years_2 <- reactive({
+      restaurant_inspections_filtered_year <- restaurant_inspections_filtered_3[restaurant_inspections_filtered_3$years == input$years_1,]
+      restaurant_inspections_filtered_year$months <- format(restaurant_inspections_filtered_year$dateandtime, format = "%m-%Y")
       df1 <- aggregate(cbind(restaurant_inspections_filtered_year$criticalviolations,restaurant_inspections_filtered_year$noncriticalviolations) ~ 
                          restaurant_inspections_filtered_year$DBA, data = restaurant_inspections_filtered_year, FUN = sum, na.rm = TRUE)
       
@@ -601,7 +701,7 @@ server <- function(input, output, session) {
     
     
     output$map <- renderLeaflet({
-      data <- years()
+      data <- years_2()
       color <- colorFactor(topo.colors(2), data$criticalYN)
       leaflet(data) %>%
         setView(lng = -73.98928, lat = 40.75042, zoom = 10) %>%
@@ -634,7 +734,7 @@ server <- function(input, output, session) {
     })
     
     output$violations <- renderPlot({
-      data <- years()
+      data <- years_2()
       table_violations <- table(data$criticalYN)
       data_table_violations <- data.frame(table_violations)
       plot1 <- ggplot(data_table_violations, mapping = aes(x = data_table_violations$Var1, y = data_table_violations$Freq)) +
@@ -648,12 +748,24 @@ server <- function(input, output, session) {
     })
     
     output$action <- renderPlot({
-      data <- years()
+      data <- years_2()
       table_actions <- table(data$ACTION)
       data_table_actions <- data.frame(table_actions)
+      data_table_actions <- subset(data_table_actions, data_table_actions$Var1!="Violations")
       plot2 <- ggplot(data_table_actions, mapping = aes(x = data_table_actions$Var1, y = data_table_actions$Freq)) +
         geom_bar(stat = "identity", position = "dodge") +
         xlab ("Action") + ylab("Frequency") 
+      return(plot2)
+      
+    })
+    
+    output$criticalmonths <- renderPlot({
+      total1 <- years_2()
+      critical_months <- data.frame(total1$months, total1$criticalYN)
+      critical_months_table <- table(critical_months)
+      df_critical_months <- data.frame(critical_months_table)
+      plot2 <- ggplot(df_critical_months, aes(x = df_critical_months$total1.months, y = df_critical_months$Freq)) + 
+        geom_bar(aes(fill = df_critical_months$total1.criticalYN),stat = "identity", position = "dodge")
       return(plot2)
       
       
@@ -661,6 +773,93 @@ server <- function(input, output, session) {
       
     })
     
+    output$criticalmonths <- renderPlot({
+      total1 <- years_2()
+      critical_months <- data.frame(total1$months, total1$criticalYN)
+      critical_months_table <- table(critical_months)
+      df_critical_months <- data.frame(critical_months_table)
+      plot2 <- ggplot(df_critical_months, aes(x = df_critical_months$total1.months, y = df_critical_months$Freq)) + 
+        geom_bar(aes(fill = df_critical_months$total1.criticalYN),stat = "identity", position = "dodge")
+      return(plot2)
+      
+      
+      
+      
+    })
+    
+    
+    output$borough <- renderPlot({
+      total1 <- years_2()
+      critical_months <- data.frame(total1$BORO, total1$criticalYN)
+      critical_months_table <- table(critical_months)
+      df_critical_months <- data.frame(critical_months_table)
+      plot2 <- ggplot(df_critical_months, aes(x = df_critical_months$total1.BORO, y = df_critical_months$Freq)) + 
+        geom_bar(aes(fill = df_critical_months$total1.criticalYN),stat = "identity", position = "dodge")
+      return(plot2)
+    })
+    
+    output$criticalviolations <- renderPlot({
+      restaurant_inspections_year <- restaurant_inspections_filtered_3[restaurant_inspections_filtered_3$years == input$years_1,]
+      restaurant_inspections_year_critical <- Corpus(VectorSource(restaurant_inspections_year$VIOLATION.DESCRIPTION))
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, content_transformer(tolower))
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removeNumbers)
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removeWords, stopwords("english"))
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removeWords, c("used", "use", "unit", "underneath","raised", "maintained", "item", 
+                                                    "allow", "spaced", "preparation", "areas", "unacceptable", "surface",
+                                                    "sides", "sealed", "provided", "properly", "proof", "present", "held",
+                                                    "exist", "attracting", "allowing", "contact", "improperly",
+                                                    "constructed", "material", "equipment", "accessibility", "house", "include", "movable",
+                                                    "facility", "premises", "conditions", "conducive", "reduced","service", "live",
+                                                    "may", "required", "cleaning", "following", "activity", "evidence", "occurred")) 
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removePunctuation)
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, stripWhitespace)
+      restaurant_inspections_year_critical_tdm <- TermDocumentMatrix(restaurant_inspections_year_critical)
+      restaurant_inspections_year_critical_tdm_matrix <- as.matrix(restaurant_inspections_year_critical_tdm)
+      restaurant_inspections_year_critical_tdm_matrix_rowsums <- rowSums(restaurant_inspections_year_critical_tdm_matrix)
+      restaurant_inspections_year_critical_tdm_matrix_sorted <- sort(restaurant_inspections_year_critical_tdm_matrix_rowsums,decreasing=TRUE)
+      restaurant_inspections_year_critical_tdm_df <- data.frame(term =  names(restaurant_inspections_year_critical_tdm_matrix_sorted),count=restaurant_inspections_year_critical_tdm_matrix_sorted)
+      
+      restaurant_inspections_year_critical_tdm_df <- head(restaurant_inspections_year_critical_tdm_df, 12)
+      
+      ggplot(data = restaurant_inspections_year_critical_tdm_df, 
+             aes(x = restaurant_inspections_year_critical_tdm_df$term, y = restaurant_inspections_year_critical_tdm_df$count)) +
+        geom_bar(stat='identity') + 
+        coord_flip() + theme_bw() +
+        xlab("Frequency") + ylab("Term")
+      
+    })
+    
+    output$noncriticalviolations <- renderPlot({
+      restaurant_inspections_year <- restaurant_inspections_filtered_3[restaurant_inspections_filtered_3$years == input$years_1,]
+      restaurant_inspections_year_critical <- restaurant_inspections_filtered_3[restaurant_inspections_filtered_3$CRITICAL.FLAG == "Not Critical",]
+      restaurant_inspections_year_critical <- Corpus(VectorSource(restaurant_inspections_year_critical$VIOLATION.DESCRIPTION))
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, content_transformer(tolower))
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removeNumbers)
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removeWords, stopwords("english"))
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removeWords, c("used", "use", "unit", "underneath","raised", "maintained", "item", 
+                                                                                                          "allow", "spaced", "preparation", "areas", "unacceptable", "surface",
+                                                                                                          "sides", "sealed", "provided", "properly", "proof", "present", "held",
+                                                                                                          "exist", "attracting", "allowing", "contact", "improperly",
+                                                                                                          "constructed", "material", "equipment", "accessibility", "house", "include", "movable",
+                                                                                                          "facility", "premises", "conditions", "conducive", "reduced","service", "live",
+                                                                                                          "may", "required", "cleaning", "following", "activity", "evidence", "occurred")) 
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, removePunctuation)
+      restaurant_inspections_year_critical <- tm_map(restaurant_inspections_year_critical, stripWhitespace)
+      restaurant_inspections_year_critical_tdm <- TermDocumentMatrix(restaurant_inspections_year_critical)
+      restaurant_inspections_year_critical_tdm_matrix <- as.matrix(restaurant_inspections_year_critical_tdm)
+      restaurant_inspections_year_critical_tdm_matrix_rowsums <- rowSums(restaurant_inspections_year_critical_tdm_matrix)
+      restaurant_inspections_year_critical_tdm_matrix_sorted <- sort(restaurant_inspections_year_critical_tdm_matrix_rowsums,decreasing=TRUE)
+      restaurant_inspections_year_critical_tdm_df <- data.frame(term =  names(restaurant_inspections_year_critical_tdm_matrix_sorted),count=restaurant_inspections_year_critical_tdm_matrix_sorted)
+      
+      restaurant_inspections_year_critical_tdm_df <- head(restaurant_inspections_year_critical_tdm_df, 12)
+      
+      ggplot(data = restaurant_inspections_year_critical_tdm_df, 
+             aes(x = restaurant_inspections_year_critical_tdm_df$term, y = restaurant_inspections_year_critical_tdm_df$count)) +
+        geom_bar(stat='identity') + 
+        coord_flip() + theme_bw() +
+        xlab("Frequency") + ylab("Term")
+      
+    })
     
 
   
