@@ -40,7 +40,12 @@ The datasets for Air Quality, Beach Water Quality and Restaurant Inspections wer
 + The sixth tab is related to Air Quality. Here there are four drop down menus. You can choose two different neighborhoods and see the difference in the three differet air pollutants. 
 
 
-+ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
++ **Contribution statement**: ([default](doc/a_note_on_contributions.md)) 
++Saumya Pandey worked on Restaurant Inspections and Air Quality, Introduction
++Saumya Pandey and Ying Gao worked on Beach Water Quality and COVID statistics
++Saumya Pandey came up with the design plan (ideas, analysis, etc.)
++Saumya Pandey presented the project.
+
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
