@@ -47,6 +47,12 @@ Saumya Pandey came up with the design plan (ideas, analysis, etc.). Saumya Pande
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
+- The lib file contains the separate functions for different topics (air quality, beach quality, COVID statistics and Restaurant Inspections). These functions helped with the analysis and gaining insights.
+- The data file contains the datasets. In the app file ('Air_Quality.csv', 'beach_2021.csv', 'COVID-19_Daily_Counts_of_Cases_Hospitalizations_and_Deaths.csv').
+The 'DOHMH_New_York_City_Restaurant_Inspection_Results.zip' is a zip file. It was too large to upload by itself so we had to compress the file.
+- The app file contains the app (includes both UI and server). Running the app file will lead to the dashboard.
+
+
 ```
 proj/
 ├── app/
