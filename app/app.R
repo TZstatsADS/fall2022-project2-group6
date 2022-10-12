@@ -129,31 +129,9 @@ ui <- fluidPage(
                                  staying at home, changes to daily life and hygiene behaviors like increased hand washing, etc.
                                  this could have lead to a decrease in the violations after COVID.")
                                  )),
-                    fluidRow(box(width = 15, title = "What the App Provides?", status = "primary", solidHeader=TRUE,
-                                 h5("The application is divided into 5 separate tabs"),
-                                 tags$div(tags$ul(
-                                     tags$li("The", strong("first"), "tab: Introduction"),
-                                     tags$li("The", strong("second"), "tab: The detailed ZIP code map shows the extent of Covid 19 outbreak in NYC. It provided key information including: confirmed cases, infection rate, number of business that are closed in the neighborhood"),
-                                     tags$li("The", strong("third and fourth"), "tab: stats on recently opened/ closed business during Covid 19, tracked separately for different industries"),
-                                     tags$li("The", strong("fifth"),"tab: Appendix and data sources")
-                                     
-                                 ))
-                                 
-                                 
-                                 
-                                 )),
+            
                     
-                    fluidRow(box(width = 15, title = "How to Use The App", status = "primary",
-                                 solidHeader = TRUE,
-                                 h5("The application is divided into 5 separate tabs"),
-                                 tags$div(tags$ul(
-                                     tags$li("The", strong("first"), "tab: Introduction"),
-                                     tags$li("The", strong("second"), "tab: The detailed ZIP code map shows the extent of Covid 19 outbreak in NYC. It provided key information including: confirmed cases, infection rate, number of business that are closed in the neighborhood"),
-                                     tags$li("The", strong("third and fourth"), "tab: stats on recently opened/ closed business during Covid 19, tracked separately for different industries"),
-                                     tags$li("The", strong("fifth"),"tab: Appendix and data sources")
-                                     
-                                 ))
-                    ))
+            
                 )), 
                 # end of home 
                 
