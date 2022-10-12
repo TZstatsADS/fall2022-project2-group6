@@ -41,10 +41,8 @@ The datasets for Air Quality, Beach Water Quality and Restaurant Inspections wer
 
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) 
-+Saumya Pandey worked on Restaurant Inspections and Air Quality, Introduction
-+Saumya Pandey and Ying Gao worked on Beach Water Quality and COVID statistics
-+Saumya Pandey came up with the design plan (ideas, analysis, etc.)
-+Saumya Pandey presented the project.
+Saumya Pandey worked on Restaurant Inspections and Air Quality, Introduction. Saumya Pandey and Ying Gao worked on Beach Water Quality and COVID statistics
+Saumya Pandey came up with the design plan (ideas, analysis, etc.). Saumya Pandey and Ying Gao prepared the presentation. Saumya Pandey presented the project. Saumya Pandey, Ying Gao and Nicolas Baker participated in group discussions.
 
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
