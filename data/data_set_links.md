@@ -5,3 +5,5 @@ Air Quality: https://data.cityofnewyork.us/Environment/Air-Quality/c3uy-2p5r
 Beach Quality: https://data.cityofnewyork.us/Health/DOHMH-Beach-Water-Quality-Data/2xir-kwzz
 
 Restaurant Inspections: https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j
+
+COVID Case Count: https://data.cityofnewyork.us/Health/COVID-19-Daily-Counts-of-Cases-Hospitalizations-an/rc75-m7u3
